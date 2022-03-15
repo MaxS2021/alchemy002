@@ -4,7 +4,7 @@ from flask import make_response, session
 
 import datetime
 
-from data import db_session
+from data import db_session, news_api
 
 from data.users import User
 from data.news import News
@@ -26,6 +26,7 @@ def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
+
 @app.route("/")
 def index():
 
@@ -37,6 +38,7 @@ def index():
     else:
         news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html", news=news)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
@@ -150,6 +152,7 @@ def news_delete(id):
 
 def main():
     db_session.global_init("db/blogs.db")
+    app.register_blueprint(news_api.blueprint)
     app.run()
 
 

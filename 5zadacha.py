@@ -35,7 +35,6 @@ import json
 import sys
 import csv
 
-
 print(sys.argv)
 args = {}
 arg = sys.argv
@@ -57,20 +56,20 @@ def index():
 def arrest():
     with open(args['filename'], "r", encoding='utf-8') as csvf:
         data = csvf.readlines()
-        #reader = list(csv.reader(csvf, delimiter=';', quotechar='"'))
+        # reader = list(csv.reader(csvf, delimiter=';', quotechar='"'))
     print(data)
     data = data[1:]
-    #prit(reader)
+    # prit(reader)
     jsn = {}
     for dt in data:
         dt1 = dt.split(";")
         print(dt1)
         if args["choice"] == 'date':
-            jsn.setdefault(dt1[3],[]).append(dt1[1]+" "+dt1[2])
+            jsn.setdefault(dt1[3], []).append(dt1[1] + " " + dt1[2])
         elif args["choice"] == 'blame':
             jsn.setdefault(dt1[4], []).append(dt1[1] + " " + dt1[2])
     for k, v in jsn.items():
-        jsn[k]=sorted(v)
+        jsn[k] = sorted(v)
     return jsonify(jsn)
 
 

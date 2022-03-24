@@ -1,17 +1,22 @@
 """
-Но едва они ступили на землю Англии, как сыщик Фикс положил руку на плечо мистера
-Фогга и торжественно объявил:
+Арест
+Ограничение времени	10 секунд
+Ограничение памяти	64Mb
+Ввод	стандартный ввод
+Вывод	стандартный вывод
+Но едва они ступили на землю Англии, как сыщик Фикс положил руку на плечо мистера Фогга
+и торжественно объявил:
 – Именем закона – вы арестованы.
 Напишите программу для выбора арестованных.
-Через аргументы командной строки передаются хост (host) и порт (port) сервера,
-а также имя файла csv filename) и параметр choice – одно из двух значений – date или blame.
-В файле записаны данные об арестованных, разделители двоеточие, заголовки файла:
+Через аргументы командной строки передаются хост (host) и порт (port) сервера, а также
+имя файла csv (ﬁlename) и параметр choice – одно из двух значений – date или blame.
+В файле записаны данные об арестованных, разделители точка с запятой, заголовки файла:
 id, фамилия, имя, дата, обвинение, срок ареста
-id, surname,first_name, date, charge, arrest_term
-Напишите приложение на flask, которое при переходе по адресу http://host:port/arrest
+id, surname, ﬁrst_name, date, charge, arrest_term
+Напишите приложение на ﬂask, которое при переходе по адресу http://host:port/arrest
 возвращает словарь в формате json с ключами: если параметр choice имеет значение date,
-то ключи даты, если blame, то статьи обвинения, значения – списки фамилий и имен
-в алфавитном порядке.
+то ключи даты, если blame, то статьи обвинения, значения – списки фамилий и имен в
+алфавитном порядке.
 
 Пример
 Ввод	Вывод
@@ -25,15 +30,29 @@ id;surname;first_name;date;charge;arrest_term
 4;Smith;Jeb;29/09;theft;20
 5;Adams;John;1/10;theft;30
 6;Byron;George;30/09;assault;60
+{
+    "robbery": [
+        "Fogg Phileas"
+    ],
+    "theft": [
+        "Adams John",
+        "Smith Jacob",
+        "Smith Jeb"
+    ],
+    "assault": [
+        "Byron George",
+        "Gabor Sam"
+    ]
+}
+Примечания
+CSV файл из примера можно скачать здесь
 
 """
 
 from flask import Flask
-from flask import jsonify, request
-import requests
-import json
+from flask import jsonify
 import sys
-import csv
+
 
 print(sys.argv)
 args = {}
@@ -49,17 +68,17 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/index')
 def index():
-    return "5 zadach!"
+    return "5 nomer!"
 
 
 @app.route('/arrest')
 def arrest():
-    with open(args['filename'], "r", encoding='utf-8') as csvf:
-        data = csvf.readlines()
-        # reader = list(csv.reader(csvf, delimiter=';', quotechar='"'))
-    print(data)
-    data = data[1:]
-    # prit(reader)
+    with open(args['filename'], "r", encoding='utf-8') as f:
+        csv = f.readlines()
+
+    print(csv)
+    data = csv[1:]
+
     jsn = {}
     for dt in data:
         dt1 = dt.split(";")

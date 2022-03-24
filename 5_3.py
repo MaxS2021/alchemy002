@@ -48,8 +48,6 @@ id:departure:arrival:distance:transport:time
 CSV файл из примера можно скачать здесь
 """
 
-
-
 from flask import Flask
 from flask import jsonify, request
 import requests
@@ -77,8 +75,7 @@ def index():
 @app.route('/less')
 def less():
     with open(args['file'], "r", encoding='utf-8') as csvf:
-        road = list(map(lambda x:x.strip(), csvf.readlines()))
-        # reader = list(csv.reader(csvf, delimiter=';', quotechar='"'))
+        road = list(map(lambda x: x.strip(), csvf.readlines()))
     print(road)
     data = road[1:]
     # prit(reader)
@@ -86,17 +83,12 @@ def less():
     for dt in data:
         dt1 = dt.split(":")
         print(dt1)
-        dst = int(int(dt1[3])/int(dt1[5]))
+        dst = int(int(dt1[3]) / int(dt1[5]))
         if dt1[4] not in jsn:
-            jsn[dt1[4]]=[999999,0]
-        jsn[dt1[4]][0]= min(jsn[dt1[4]][0], dst)
+            jsn[dt1[4]] = [999999, 0]
+        jsn[dt1[4]][0] = min(jsn[dt1[4]][0], dst)
         jsn[dt1[4]][1] = max(jsn[dt1[4]][1], dst)
-        # if args["choice"] == 'date':
-        #     jsn.setdefault(dt1[3], []).append(dt1[1] + " " + dt1[2])
-        # elif args["choice"] == 'blame':
-        #     jsn.setdefault(dt1[4], []).append(dt1[1] + " " + dt1[2])
-    # for k, v in jsn.items():
-    #     jsn[k] = sorted(v)
+
     return jsonify(jsn)
 
 

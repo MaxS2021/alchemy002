@@ -49,11 +49,8 @@ CSV файл из примера можно скачать здесь
 """
 
 from flask import Flask
-from flask import jsonify, request
-import requests
-import json
+from flask import jsonify
 import sys
-import csv
 
 print(sys.argv)
 args = {}
@@ -64,12 +61,6 @@ for i in range(1, len(sys.argv)):
 print(args)
 
 app = Flask(__name__)
-
-
-@app.route('/')
-@app.route('/index')
-def index():
-    return "5 !"
 
 
 @app.route('/less')
